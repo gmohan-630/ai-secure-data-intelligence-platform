@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Secure Data Intelligence Platform</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f4; text-align:center; }
+        textarea { width:80%; height:150px; }
+        button { padding:10px; background:blue; color:white; }
+        .box { background:white; margin:20px; padding:15px; }
+    </style>
+</head>
+<body>
+
+<h2>AI Secure Data Intelligence Platform</h2>
+
+<textarea id="log" placeholder="Paste log file here..."></textarea><br><br>
+<button onclick="analyze()">Analyze</button>
+
+<div class="box">
+<h3>Findings:</h3>
+<p id="findings"></p>
+
+<h3>Risk Level:</h3>
+<p id="risk"></p>
+
+<h3>Insights:</h3>
+<p id="insights"></p>
+</div>
+
+<script>
+function analyze() {
+    let log = document.getElementById("log").value;
+
+    let findings = "";
+    let riskScore = 0;
+    let insights = "";
+
+    if (log.includes("password")) {
+        findings += "Password Found (CRITICAL)<br>";
+        riskScore += 5;
+    }
+    if (log.includes("api_key")) {
+        findings += "API Key Found (HIGH)<br>";
+        riskScore += 3;
+    }
+    if (log.includes("@")) {
+        findings += "Email Found (LOW)<br>";
+        riskScore += 1;
+    }
+    if (log.includes("Exception")) {
+        findings += "Stack Trace Found (MEDIUM)<br>";
+        riskScore += 2;
+    }
+
+    let riskLevel = "LOW";
+    if (riskScore >= 7) riskLevel = "HIGH";
+    else if (riskScore >= 4) riskLevel = "MEDIUM";
+
+    // Insights
+    if (log.includes("password") || log.includes("api_key")) {
+        insights += "Sensitive credentials exposed<br>";
+    }
+    if (log.includes("Exception")) {
+        insights += "System error details leaked<br>";
+    }
+
+    if (findings === "") findings = "No issues found";
+
+    document.getElementById("findings").innerHTML = findings;
+    document.getElementById("risk").innerHTML = riskLevel;
+    document.getElementById("insights").innerHTML = insights;
+}
+</script>
+
+</body>
+</html>
